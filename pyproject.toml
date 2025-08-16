@@ -8,6 +8,7 @@ authors = [
 ]
 requires-python = ">=3.10"
 dependencies = [
+    "lark>=1.2.2",
     "ply",
     "pytest>=8.4.1",
 ]
@@ -18,3 +19,8 @@ build-backend = "uv_build"
 
 [tool.uv.sources]
 ply = { git = "https://github.com/dabeaz/ply.git" }
+
+[dependency-groups]
+dev = [
+    "tqdm",
+]

@@ -1,14 +1,13 @@
-from abc_notation.parsing.parser import parser
-from abc_notation.parsing.calclex import lexer
-from abc_notation.tune import Tune
-from typing import Iterable
-from pathlib import Path
 import logging
-from typing import Optional
+from pathlib import Path
+from typing import Iterable, Optional
+
+from abc_notation.parsing.calclex import lexer
+from abc_notation.parsing.parser import parser
+from abc_notation.tune import Tune
 
 
 class ParserABC:
-
     def __init__(
         self,
         allow_illegal_chars=False,
@@ -26,19 +25,28 @@ class ParserABC:
         self._current_file_path: Optional[Path] = None
         self._current_tune_block: Optional[str] = None
 
+        # Store the main lexer and parser objects
+        self.main_lexer = lexer
+        self.main_parser = parser
+
     def parse_tune(self, text: str) -> Tune:
-        lex = lexer.clone()
-        # par = parser.clone()
-        lex.disallow_illegal_characters = True
-        # par.disallow_illegal_characters = True
-        parser.disallow_illegal_characters = True
+        # Clone the lexer for this specific parsing operation
+        # This ensures each tune gets a fresh lexer state
+        tune_lexer = self.main_lexer.clone()
+
+        # Configure the lexer settings
+        tune_lexer.disallow_illegal_characters = not self.allow_illegal_chars
+
         try:
-            tune = parser.parse(text, lexer=lex)
+            # Pass the specific lexer to the parser
+            tune = self.main_parser.parse(text, lexer=tune_lexer)
         except ValueError as ex:
-            raise ValueError(
-                f"{ex}\nfile at: {self._current_file_path}\n{text}")
-        if not self.allow_illegal_chars and lex.illegal_character:
+            raise ValueError(f"{ex}\nfile at: {self._current_file_path}\n{text}")
+
+        # Check for illegal characters if not allowed
+        if not self.allow_illegal_chars and tune_lexer.illegal_character:
             raise SyntaxError(f"{self._current_file_path}\n{text}")
+
         return tune
 
     def parse_abcfile(self, text: str) -> Iterable[Tune]:
@@ -61,13 +69,14 @@ class ParserABC:
                 yield self.parse_tune(tune_block)
 
     def parse_dataset(self, path: str | Path) -> Iterable[Tune]:
-
         path = Path(path)
-        file_names = path.rglob(
-            "*.abc") if self.recursive_search else path.glob("*.abc")
+        file_names = (
+            path.rglob("*.abc") if self.recursive_search else path.glob("*.abc")
+        )
         file_names = sorted(file_names) if self.sorted_search else file_names
 
         for file_name in file_names:
+            print(file_name)
             self._current_file_path = file_name
             with open(file_name, "r") as file:
                 abcfile = file.read()

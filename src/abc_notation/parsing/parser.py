@@ -84,6 +84,7 @@ def p_body_slur_body(p):
 
 def p_slur_symbol(p):
     """slur : slur NOTE
+    | slur BROKEN_RHYTHM
     | slur BAR_LINE"""
     p[1].append(p[2])
     p[0] = p[1]
@@ -96,7 +97,7 @@ def p_slur_empty(p):
 
 def p_error(p):
     raise SyntaxError(f"parsing error: {p}")
-    logging.warning(f"parser error: {p}")
+    # logging.warning(f"parser error: {p}")
 
 
 parser = yacc()

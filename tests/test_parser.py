@@ -141,3 +141,19 @@ K:G"""
 
     parser = ParserABC()
     tune = parser.parse_tune(data)
+
+    def test_problematic_no_1(self):
+        data = """X:1
+T:Lord Kirkcudbright
+M:3/4
+L:1/8
+N:"Slow"
+B:Gow - Sixth Collection of Strathspey Reels (1822)
+Z:AK/Fiddler's Companion
+K:D
+(FA) B>A A2|d>B AF E2|(F<A) B>A A2|(A<f) ~e3d|d6:||
+aefc d2|BA dF E2|aefc d2|Af Te3d|d6|
+aefc d2|BA dF E2|FA TB>A A2|A2g2 f/e/(d/c/)| d6||"""
+
+        parser = ParserABC()
+        tune = parser.parse_tune(data)
