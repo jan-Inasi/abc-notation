@@ -1,9 +1,9 @@
-from abc_notation.parsing.parsing import ParserABC
-import abc_notation.fields as abcf
-from abc_notation.symbols import Note, Accidental
-import abc_notation.symbols as symbols
 from fractions import Fraction
 
+import abc_notation.fields as abcf
+import abc_notation.symbols as symbols
+from abc_notation.parsing.parsing import ParserABC
+from abc_notation.symbols import Accidental, Note
 
 data = """ X:314
 T: Bohnenlied
@@ -28,7 +28,6 @@ F2c2A2 | F2A2G4 | F8 | z2
 
 
 class TestParser:
-
     def test_parse(self):
         parser = ParserABC()
         tune = parser.parse_tune(data)
@@ -37,7 +36,8 @@ class TestParser:
         assert tune.head.meter == abcf.meter.SimpleMeter(4, 4)
         assert len(tune.head.other["N"]) == 3
         assert tune.head.other["R"][0] == abcf.string_fields.Rhythm(
-            "Romanze, Ballade, Lied")
+            "Romanze, Ballade, Lied"
+        )
         assert tune.head.key == abcf.key.Key("F")
 
         b = tune.body
@@ -118,9 +118,9 @@ T: Lord John Campbell
 C:
 R:Strathspey
 Q: 128
-K:D
 M:4/4
 L:1/16
+K:D
 |:A,2|DDD2 F3D C2E2 E3F|DDD2 F3D A2D2 F2D2|G2BG F2AF GFED C3E|DDD2 f3e d2D2 D2:|"""
 
         parser = ParserABC()

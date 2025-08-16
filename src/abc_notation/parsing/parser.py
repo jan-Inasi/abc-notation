@@ -1,9 +1,10 @@
-from ply.yacc import yacc
-from abc_notation.parsing.token_names import tokens  # it's necessary, don't delete
-from abc_notation.tune import Tune, Head
-from abc_notation.body import Body
 import logging
 
+from ply.yacc import yacc
+
+from abc_notation.body import Body
+from abc_notation.parsing.token_names import tokens  # it's necessary, don't delete
+from abc_notation.tune import Head, Tune
 
 # HEAD
 
@@ -38,7 +39,7 @@ def p_header_list_unit_note_length(p):
 
 def p_header_list_description(p):
     """header_list : header_list DESCRIPTION_HEADER
-                   | header_list TEMPO"""
+    | header_list TEMPO"""
     other: dict[str, str] = p[1].get("other", {})
     string_field = p[2]
     other.setdefault(string_field.LETTER_NAME, []).append(string_field)
@@ -56,18 +57,18 @@ def p_body_empty(p):
 
 def p_body_symbol(p):
     """body : body NOTE
-            | body REST
-            | body MULTIMEASURE_REST
-            | body NEW_LINE
-            | body METER_CHANGE_FIELD
-            | body BROKEN_RHYTHM
-            | body TUPLET_SPECIFIER
-            | body BAR_LINE
-            | body CHORD_NAME
-            | body SHORTHAND_DECORATION
-            | body DECORATION
-            | body TEMPO_INLINE
-            | body INLINE_STRING_FIELD"""
+    | body REST
+    | body MULTIMEASURE_REST
+    | body NEW_LINE
+    | body METER_CHANGE_FIELD
+    | body BROKEN_RHYTHM
+    | body TUPLET_SPECIFIER
+    | body BAR_LINE
+    | body CHORD_NAME
+    | body SHORTHAND_DECORATION
+    | body DECORATION
+    | body TEMPO_INLINE
+    | body INLINE_STRING_FIELD"""
     p[1].append(p[2])
     p[0] = p[1]
 
@@ -83,7 +84,7 @@ def p_body_slur_body(p):
 
 def p_slur_symbol(p):
     """slur : slur NOTE
-            | slur BAR_LINE"""
+    | slur BAR_LINE"""
     p[1].append(p[2])
     p[0] = p[1]
 
