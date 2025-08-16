@@ -1,0 +1,19 @@
+version = 1
+revision = 2
+requires-python = ">=3.10"
+
+[[package]]
+name = "abc-notation"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "ply" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "ply", git = "https://github.com/dabeaz/ply.git" }]
+
+[[package]]
+name = "ply"
+version = "2022.10.27"
+source = { git = "https://github.com/dabeaz/ply.git#5c4dc94d4c6d059ec127ee1493c735963a5d2645" }

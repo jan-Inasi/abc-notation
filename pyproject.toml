@@ -1,0 +1,19 @@
+[project]
+name = "abc-notation"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "jan-Inasi", email = "ignacymajkusiak@gmail.com" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "ply",
+]
+
+[build-system]
+requires = ["uv_build>=0.8.3,<0.9.0"]
+build-backend = "uv_build"
+
+[tool.uv.sources]
+ply = { git = "https://github.com/dabeaz/ply.git" }
